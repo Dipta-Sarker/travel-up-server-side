@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const app = express()
 var cors = require('cors')
@@ -24,6 +24,21 @@ async function run(){
             const query ={}
             const cursor = travelCollection.find(query)
             const result = await cursor.limit(3).toArray()
+            res.send(result)
+        })
+        
+        app.get('/servicesDetails/:id', async(req,res)=>{
+          const id = req.params.id;
+          const query ={_id:ObjectId(id)}
+          const cursor = travelCollection.find(query)
+          const result = await cursor.toArray()
+          res.send(result)
+        })
+
+        app.get('/allservices', async(req,res)=>{
+            const query ={}
+            const cursor = travelCollection.find(query)
+            const result = await cursor.toArray()
             res.send(result)
         })
     }
