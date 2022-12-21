@@ -41,6 +41,13 @@ async function run(){
             const result = await cursor.toArray()
             res.send(result)
         })
+
+         app.post('/addService', async(req,res)=>{
+            const service = req.body;
+            console.log(service)
+            const result = await travelCollection.insertOne(service)
+            res.send(result)
+        })
     }
     finally{
 
