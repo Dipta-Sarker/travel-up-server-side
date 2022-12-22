@@ -19,6 +19,7 @@ async function run(){
 
     try{
         const travelCollection = client.db('travelUp').collection('services')
+        const reviewsCollection = client.db('travelUp').collection('reviews')
 
         app.get('/services', async(req,res)=>{
             const query ={}
@@ -48,6 +49,30 @@ async function run(){
             const result = await travelCollection.insertOne(service)
             res.send(result)
         })
+
+        app.post('/addReview',async(req,res)=>{
+          const review = req.body;
+          const result = await reviewsCollection.insertOne(review)
+          res.send(result)
+          
+        })
+        app.get('/allReviews', async(req,res)=>{
+          const query = {}
+          const cursor = reviewsCollection.find(query)
+          const result = await cursor.toArray()
+          res.send(result)
+        })
+        app.get('/myReview', async(req,res)=>{
+          const email = req.query.email
+          let query ={}
+          if(email){
+            query = {email:email}
+          }
+          const cursor = reviewsCollection.find(query)
+          const result = await cursor.toArray()
+          res.send(result)
+        })
+
     }
     finally{
 
